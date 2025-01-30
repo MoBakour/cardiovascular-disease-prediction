@@ -27,108 +27,98 @@ const Inputs = ({
     loading,
 }: IInputs) => {
     return (
-        <div>
-            <div className="flex items-center gap-12">
-                <div className="flex flex-col gap-6">
-                    <div className="flex items-end gap-6">
-                        <div className="w-[120px]">
-                            <p className="mb-2 font-bold">Gender</p>
-                            <Select
-                                value={inputs.gender}
-                                onValueChange={(value) =>
-                                    setInputs({ ...inputs, gender: value })
-                                }
-                            >
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="2">Male</SelectItem>
-                                    <SelectItem value="1">Female</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
+        <div className="w-fit m-auto">
+            <div className="grid grid-cols-3 gap-6 items-end sm:grid-cols-2">
+                <div className="w-[120px]">
+                    <p className="mb-2 font-bold">Gender</p>
+                    <Select
+                        value={inputs.gender}
+                        onValueChange={(value) =>
+                            setInputs({ ...inputs, gender: value })
+                        }
+                    >
+                        <SelectTrigger>
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="2">Male</SelectItem>
+                            <SelectItem value="1">Female</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                        <div className="w-[120px]">
-                            <p className="mb-2 font-bold">Height (cm)</p>
-                            <Input
-                                type="number"
-                                value={inputs.height}
-                                onChange={(e) =>
-                                    setInputs({
-                                        ...inputs,
-                                        height: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
+                <div className="w-[120px]">
+                    <p className="mb-2 font-bold">Height (cm)</p>
+                    <Input
+                        type="number"
+                        value={inputs.height}
+                        onChange={(e) =>
+                            setInputs({
+                                ...inputs,
+                                height: e.target.value,
+                            })
+                        }
+                    />
+                </div>
 
-                        <div className="w-[120px]">
-                            <p className="mb-2 font-bold">Weight (kg)</p>
-                            <Input
-                                type="number"
-                                value={inputs.weight}
-                                onChange={(e) =>
-                                    setInputs({
-                                        ...inputs,
-                                        weight: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-                    </div>
+                <div className="w-[120px]">
+                    <p className="mb-2 font-bold">Weight (kg)</p>
+                    <Input
+                        type="number"
+                        value={inputs.weight}
+                        onChange={(e) =>
+                            setInputs({
+                                ...inputs,
+                                weight: e.target.value,
+                            })
+                        }
+                    />
+                </div>
 
-                    <div className="flex items-end gap-6">
-                        <div className="w-[120px]">
-                            <p className="mb-2 font-bold">Age</p>
-                            <Input
-                                type="number"
-                                value={inputs.age}
-                                onChange={(e) =>
-                                    setInputs({
-                                        ...inputs,
-                                        age: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
+                <div className="w-[120px]">
+                    <p className="mb-2 font-bold">Age</p>
+                    <Input
+                        type="number"
+                        value={inputs.age}
+                        onChange={(e) =>
+                            setInputs({
+                                ...inputs,
+                                age: e.target.value,
+                            })
+                        }
+                    />
+                </div>
 
-                        <div className="w-[120px]">
-                            <p className="mb-2 font-bold">
-                                Systolic blood pressure
-                            </p>
-                            <Input
-                                type="number"
-                                value={inputs.systolic}
-                                onChange={(e) =>
-                                    setInputs({
-                                        ...inputs,
-                                        systolic: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
+                <div className="w-[120px]">
+                    <p className="mb-2 font-bold">Systolic blood pressure</p>
+                    <Input
+                        type="number"
+                        value={inputs.systolic}
+                        onChange={(e) =>
+                            setInputs({
+                                ...inputs,
+                                systolic: e.target.value,
+                            })
+                        }
+                    />
+                </div>
 
-                        <div className="w-[120px]">
-                            <p className="mb-2 font-bold">
-                                Diastolic blood pressure
-                            </p>
-                            <Input
-                                type="number"
-                                value={inputs.diastolic}
-                                onChange={(e) =>
-                                    setInputs({
-                                        ...inputs,
-                                        diastolic: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-                    </div>
+                <div className="w-[120px]">
+                    <p className="mb-2 font-bold">Diastolic blood pressure</p>
+                    <Input
+                        type="number"
+                        value={inputs.diastolic}
+                        onChange={(e) =>
+                            setInputs({
+                                ...inputs,
+                                diastolic: e.target.value,
+                            })
+                        }
+                    />
                 </div>
             </div>
 
-            <div className="flex justify-between mt-6">
+            <div className="flex justify-between mt-6 sm:flex-col sm:gap-6">
                 <div>
                     <p className="font-bold">Cholesterol</p>
                     <Select
@@ -168,7 +158,7 @@ const Inputs = ({
                 </div>
             </div>
 
-            <div className="mt-6 flex items-end justify-between">
+            <div className="mt-6 flex items-end justify-between sm:flex-col sm:items-start sm:gap-6">
                 <div className="w-[120px] flex flex-col gap-2">
                     <div className="flex items-center justify-between gap-2">
                         <p className="font-bold">Smokes</p>
@@ -204,7 +194,7 @@ const Inputs = ({
                 <Button
                     variant="outline"
                     onClick={getPrediction}
-                    className="w-[170px] disabled:pointer-events-none"
+                    className="w-[170px] disabled:pointer-events-none sm:m-auto"
                     disabled={loading}
                 >
                     {loading ? (

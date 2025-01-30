@@ -19,7 +19,7 @@ const Evaluation = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-3 items-end gap-y-20 gap-x-10">
+        <div className="grid grid-cols-3 items-end gap-y-20 gap-x-10 lg:grid-cols-2 sm:!grid-cols-1 sm:!justify-items-center">
             {reports ? (
                 Object.entries(reports).map(([key, report]) => (
                     <ReportDisplay key={key} model={key} report={report} />

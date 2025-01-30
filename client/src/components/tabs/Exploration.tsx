@@ -223,7 +223,7 @@ function Exploration() {
                 Categorical Features Distribution
             </h2>
 
-            <div className="grid grid-cols-2 gap-10 mt-10">
+            <div className="grid grid-cols-2 gap-10 mt-10 lg:grid-cols-1 lg:justify-items-center">
                 <div className="">
                     <Bar data={genderChartData} />
                 </div>
@@ -248,7 +248,7 @@ function Exploration() {
                 Numerical Features Distribution
             </h2>
 
-            <div className="grid grid-cols-2 gap-10 mt-10">
+            <div className="grid grid-cols-2 gap-10 mt-10 lg:grid-cols-1 lg:justify-items-center">
                 <div className="">
                     <Bar data={ageHistogramData} />
                 </div>

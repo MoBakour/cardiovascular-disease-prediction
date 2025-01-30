@@ -10,12 +10,12 @@ const App = () => {
     const [activeTab, setActiveTab] = useState("Prediction");
 
     return (
-        <div className="container w-[80%] mx-auto mt-20">
-            <nav className="flex justify-between items-center">
-                <h1 className="text-4xl font-bold">
+        <div className="w-[80%] sm:w-[90%] max-w-[1100px] mx-auto mt-20">
+            <nav className="flex justify-between items-center lg:flex-col">
+                <h1 className="text-4xl font-bold pr-4 lg:pr-0 lg:pb-2 lg:text-center sm:text-3xl">
                     Cardiovascular Disease Prediction
                 </h1>
-                <div className="flex gap-6">
+                <div className="flex gap-6 sm:gap-3 sm:text-sm">
                     {tabs.map((tab) => (
                         <p
                             key={tab}

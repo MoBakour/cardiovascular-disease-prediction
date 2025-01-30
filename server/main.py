@@ -145,13 +145,15 @@ for name, model in model_constructors.items():
     untuned_instance.fit(X_train, y_train)
     models[name] = untuned_instance
 
-    grid_tuning_instance = RandomizedSearchCV(model(), param_grids[name], cv=5, n_iter=10, n_jobs=-1)
-    grid_tuning_instance.fit(X_train, y_train)
-    grid_tuning_models[name] = grid_tuning_instance
+    # grid_tuning_instance = RandomizedSearchCV(model(), param_grids[name], cv=5, n_iter=10, n_jobs=-1)
+    # grid_tuning_instance.fit(X_train, y_train)
+    # grid_tuning_models[name] = grid_tuning_instance
 
-    randomized_tuning_instance = RandomizedSearchCV(model(), param_grids[name], cv=5, n_iter=10, n_jobs=-1)
-    randomized_tuning_instance.fit(X_train, y_train)
-    randomized_tuning_models[name] = randomized_tuning_instance
+    # randomized_tuning_instance = RandomizedSearchCV(model(), param_grids[name], cv=5, n_iter=10, n_jobs=-1)
+    # randomized_tuning_instance.fit(X_train, y_train)
+    # randomized_tuning_models[name] = randomized_tuning_instance
+    grid_tuning_models[name] = untuned_instance
+    randomized_tuning_models[name] = untuned_instance
 
 # Evaluate the models
 results = {}

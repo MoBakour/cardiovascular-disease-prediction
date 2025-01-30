@@ -17,7 +17,7 @@ const displayNames: { [key: string]: string } = {
 
 const ReportDisplay = ({ model, report }: IReport) => {
     return (
-        <div>
+        <div className="w-fit">
             <h2 className="font-bold text-2xl">{model}</h2>
 
             {Object.entries(report).map(([key, value]: [string, number]) => (

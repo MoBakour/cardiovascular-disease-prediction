@@ -16,7 +16,7 @@ interface ISettings {
 
 const Settings = ({ settings, setSettings }: ISettings) => {
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col lg:flex-row sm:!flex-col gap-6 lg:m-auto">
             <div>
                 <p className="font-bold">Model</p>
                 <Select

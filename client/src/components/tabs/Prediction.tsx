@@ -103,8 +103,8 @@ const Prediction = () => {
     };
 
     return (
-        <div className="flex justify-between gap-10">
-            <div className="flex flex-col gap-20">
+        <div className="flex justify-between gap-10 lg:flex-col">
+            <div className="flex flex-col gap-20 lg:gap-10">
                 <Settings settings={settings} setSettings={setSettings} />
                 <Result prediction={prediction} />
             </div>
