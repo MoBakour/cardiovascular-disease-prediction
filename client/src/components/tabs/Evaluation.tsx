@@ -1,32 +1,85 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ReportDisplay from "../sections/ReportDisplay";
 import { Report } from "@/types";
-import { Loader2 } from "lucide-react";
+import { fetchEvaluation, ApiError } from "@/lib/api";
 
 const Evaluation = () => {
     const [reports, setReports] = useState<{ [key: string]: Report } | null>();
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        (async () => {
+        const loadEval = async () => {
             try {
-                const response = await fetch("http://localhost:5000/evaluate");
-                const data = await response.json();
+                const data = await fetchEvaluation();
                 setReports(data);
-            } catch (error) {
-                console.error(error);
+                setError(false);
+            } catch (err) {
+                console.error(err);
+                // 503 means models are still training — keep waiting quietly.
+                // Any other failure is a real error.
+                setError(!(err instanceof ApiError && err.status === 503));
+                // Retry in 5s in either case
+                setTimeout(loadEval, 5000);
             }
-        })();
+        };
+        loadEval();
     }, []);
 
+    // Find the best model by accuracy
+    const bestModel = useMemo(() => {
+        if (!reports) return null;
+        let best = "";
+        let bestAcc = 0;
+        for (const [key, report] of Object.entries(reports)) {
+            if (report.accuracy > bestAcc) {
+                bestAcc = report.accuracy;
+                best = key;
+            }
+        }
+        return best;
+    }, [reports]);
+
     return (
-        <div className="grid grid-cols-3 items-end gap-y-20 gap-x-10 lg:grid-cols-2 sm:!grid-cols-1 sm:!justify-items-center">
+        <div>
+            <h2 className="text-3xl font-bold gradient-text mb-2">
+                Model Evaluation
+            </h2>
+            <p className="text-white/40 mb-8 text-sm">
+                Performance comparison of 9 model variants across accuracy,
+                precision, recall, F1, and cross-validation scores
+            </p>
+
             {reports ? (
-                Object.entries(reports).map(([key, report]) => (
-                    <ReportDisplay key={key} model={key} report={report} />
-                ))
+                <div className="grid grid-cols-3 gap-5 lg:grid-cols-2 sm:!grid-cols-1">
+                    {Object.entries(reports).map(
+                        ([key, report], index) => (
+                            <div
+                                key={key}
+                                style={{
+                                    animationDelay: `${index * 60}ms`,
+                                }}
+                            >
+                                <ReportDisplay
+                                    model={key}
+                                    report={report}
+                                    isBest={key === bestModel}
+                                />
+                            </div>
+                        )
+                    )}
+                </div>
             ) : (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <Loader2 size={80} className="animate-spin opacity-60" />
+                <div>
+                    <div className="grid grid-cols-3 gap-5 lg:grid-cols-2 sm:!grid-cols-1">
+                        {Array.from({ length: 9 }).map((_, i) => (
+                            <div key={i} className="skeleton h-56" />
+                        ))}
+                    </div>
+                    <p className="text-center text-white/30 mt-6 text-sm">
+                        {error
+                            ? "Failed to load. Is the server running?"
+                            : "Training models... This may take a minute."}
+                    </p>
                 </div>
             )}
         </div>

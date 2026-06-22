@@ -1,6 +1,7 @@
 import Settings from "@/components/sections/Settings";
 import Inputs from "@/components/sections/Inputs";
 import Result from "@/components/sections/Result";
+import { fetchPrediction } from "@/lib/api";
 import z from "zod";
 import { useState } from "react";
 
@@ -25,43 +26,30 @@ const Prediction = () => {
     });
 
     const [prediction, setPrediction] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
     const getPrediction = async () => {
+        // validate — a positive whole number is required for each numeric field
+        const numericField = z
+            .string()
+            .regex(/^\d+$/)
+            .refine((v) => +v > 0);
+        const schema = z.object({
+            age: numericField,
+            height: numericField,
+            weight: numericField,
+            systolic: numericField,
+            diastolic: numericField,
+        });
+
+        if (!schema.safeParse(inputs).success) {
+            setError("Please fill all fields with valid positive numbers.");
+            return;
+        }
+
         try {
-            // validate
-            const schema = z.object({
-                age: z
-                    .string()
-                    .nonempty()
-                    .regex(/^\d+$/)
-                    .min(1, { message: "Age is required" }),
-                height: z
-                    .string()
-                    .nonempty()
-                    .regex(/^\d+$/)
-                    .min(1, { message: "Height is required" }),
-                weight: z
-                    .string()
-                    .nonempty()
-
-                    .regex(/^\d+$/)
-                    .min(1, { message: "Weight is required" }),
-                systolic: z
-                    .string()
-                    .nonempty()
-                    .regex(/^\d+$/)
-                    .min(1, { message: "Systolic is required" }),
-                diastolic: z
-                    .string()
-                    .nonempty()
-                    .regex(/^\d+$/)
-                    .min(1, { message: "Diastolic is required" }),
-            });
-
-            schema.parse(inputs);
-            setError(false);
+            setError("");
             setLoading(true);
 
             // form the inputs in a single array
@@ -79,24 +67,18 @@ const Prediction = () => {
                 +inputs.active,
             ];
 
-            const data = await fetch("http://localhost:5000/predict", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    input,
-                    model: settings.model,
-                    tuning: settings.tuning,
-                }),
+            const response = await fetchPrediction({
+                input,
+                model: settings.model,
+                tuning: settings.tuning,
             });
-
-            const response = await data.json();
 
             setPrediction(response.prediction[0].toString());
         } catch (error) {
             console.error(error);
-            setError(true);
+            setError(
+                "Could not get a prediction. Make sure the server is running and try again."
+            );
         } finally {
             setLoading(false);
         }

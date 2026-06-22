@@ -15,7 +15,7 @@ interface IInputs {
     inputs: any;
     setInputs: (inputs: any) => void;
     getPrediction: () => void;
-    error: boolean;
+    error: string;
     loading: boolean;
 }
 
@@ -207,9 +207,7 @@ const Inputs = ({
 
             {error && (
                 <div className="mt-6">
-                    <Label className="text-orange-500">
-                        Please fill all the fields
-                    </Label>
+                    <Label className="text-orange-500">{error}</Label>
                 </div>
             )}
         </div>
